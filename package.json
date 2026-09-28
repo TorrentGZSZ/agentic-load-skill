@@ -1,0 +1,46 @@
+{
+  "name": "agentic-load-skill",
+  "version": "0.1.7",
+  "description": "Agentic Search-inspired non-vectorized routing and management for Agent Skills",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "os": ["win32"],
+  "type": "module",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "agentic-load-skill": "bin/agentic-load-skill"
+  },
+  "files": [
+    "README.md",
+    "bin/",
+    "lib/agentic-load-skill.mjs",
+    "skills/",
+    "plugins/codex/.codex-plugin/plugin.json",
+    "plugins/codex/prompts/"
+  ],
+  "scripts": {
+    "generate:assets": "node scripts/generate-assets.mjs",
+    "check:assets": "node scripts/generate-assets.mjs --check",
+    "check:pack": "node scripts/check-pack.mjs",
+    "build": "node scripts/generate-assets.mjs && node scripts/build.mjs",
+    "prepack": "npm run build",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test --import tsx tests/init.test.ts tests/config.test.ts tests/text-match.test.ts tests/metadata-route.test.ts tests/route.test.ts",
+    "test:e2e": "npm run test:e2e:offline",
+    "test:e2e:offline": "node --test --test-concurrency=1 --import tsx tests/cli-offline.e2e.ts",
+    "cli": "tsx src/cli.ts",
+    "install:codex-plugin": "node scripts/install-codex.mjs",
+    "uninstall:codex-plugin": "node scripts/uninstall-codex.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "esbuild": "^0.28.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

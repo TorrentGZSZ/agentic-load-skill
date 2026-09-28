@@ -1,0 +1,26 @@
+node_modules/
+/lib/
+plugins/*/lib/
+*.log
+.DS_Store
+*.tmp
+*.tmp.*
+.claude/worktrees/
+artifacts/
+*.tgz
+
+# Local research material and unpublished UI prototype.
+/experiments/
+/docs/reports/
+/docs/assets/
+/docs/index.html
+/assets/
+/src/commands/web.ts
+/tests/web.test.ts
+
+# Third-party benchmark corpora are generated/downloaded on demand.
+experiments/dci-compare/skillrouter-skills/
+experiments/dci-compare/queries.json
+experiments/dci-compare/corpus-manifest.json
+experiments/scaling-jbounded/corpus-*/
+

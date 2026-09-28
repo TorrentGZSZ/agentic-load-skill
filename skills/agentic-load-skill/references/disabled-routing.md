@@ -1,0 +1,47 @@
+# Disabled-skill L-agentic routing
+
+Agentic Load Skill routes to disabled skill instructions through
+Agentic Search-inspired, metadata-only corpus primitives. It is deliberately
+non-vectorized: do not assume embeddings, a vector database, or a hidden
+semantic index. Use the `agentic_load_skill` helper from `SKILL.md`.
+
+Do not call `route`. Do not call `dci` or `body`. During
+retrieval, do not read disabled skill bodies.
+
+## Search
+
+Build two term sets from the user request:
+
+- **must terms**: 1-3 narrow terms the correct skill should mention.
+- **probe terms**: 2-5 additional distinctive terms for recall and ranking.
+
+Search with a bounded expression:
+
+```powershell
+agentic_load_skill corpus search --all "<must1>" --any "<probe1>" --any "<probe2>" --any "<probe3>" --limit 30 --json
+```
+
+Iterate at most 2-4 searches. If `totalMatches` is 0, broaden or replace one
+must term. If `truncated` is true or `totalMatches` is greater than 30, narrow
+with another `--all` term or more specific probes.
+
+## Inspect
+
+Inspect only plausible metadata records:
+
+```powershell
+agentic_load_skill corpus inspect corpus-REF1 corpus-REF2 corpus-REF3 --json
+```
+
+Choose by explicit metadata evidence, not nearby topic similarity.
+
+## Select
+
+Record exactly one supported selection:
+
+```powershell
+agentic_load_skill corpus select "<corpus-ref-or-id>" --query "<current user request>" --confidence high --reason "<brief metadata evidence>" --json
+```
+
+Then read `selected.skillMdPath` and follow that disabled skill. If metadata
+evidence stays weak or ambiguous, stop the router path and continue normally.
