@@ -1,8 +1,14 @@
 {
   "name": "agentic-load-skill",
   "version": "0.1.7",
-  "description": "Agentic Search-inspired non-vectorized routing and management for Agent Skills",
+  "description": "Windows CLI for managing and routing Codex Agent Skills",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TorrentGZSZ/agentic-load-skill.git"
+  },
+  "homepage": "https://github.com/TorrentGZSZ/agentic-load-skill#readme",
+  "bugs": "https://github.com/TorrentGZSZ/agentic-load-skill/issues",
   "engines": {
     "node": ">=20"
   },

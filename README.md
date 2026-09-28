@@ -2,7 +2,22 @@
 
 Windows PowerShell 下的 Codex skill 检索与管理 CLI。需要 Node.js 20 或更新版本。
 
-## 从本仓库安装并验证
+## 从 npm 安装
+
+~~~powershell
+npm install -g agentic-load-skill
+agentic-load-skill --help
+~~~
+
+只想临时查看命令时运行：
+
+~~~powershell
+npx --yes agentic-load-skill@latest --help
+~~~
+
+当前版本的 init 会记录 CLI 的绝对路径，因此请用全局安装的命令初始化，不要用一次性 npx 初始化。
+
+## 从源码安装并验证
 
 在本仓库根目录运行：
 
@@ -56,20 +71,3 @@ agentic-load-skill enable '<skill-id-from-status>'
 ~~~
 
 disable 会重命名目标 skill 文件；enable 会恢复它。只对你确认要调整的 ID 使用这些命令。
-
-## npm 发布后
-
-包发布到 npm 后，可从任意目录临时运行：
-
-~~~powershell
-npx --yes agentic-load-skill@latest --help
-~~~
-
-长期使用请安装：
-
-~~~powershell
-npm install -g agentic-load-skill
-agentic-load-skill init codex project
-~~~
-
-当前版本的 init 会记录 CLI 的绝对路径，因此不要把一次性 npx init 当作长期安装方式。
