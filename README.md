@@ -100,3 +100,7 @@ agentic-load-skill enable '<skill-id-from-status>'
 ~~~
 
 `disable` 会重命名目标 skill 文件；`enable` 会恢复它。只对你确认要调整的 ID 使用这些命令。其他可用命令见 `agentic-load-skill --help`。
+
+## 实验报告
+
+[在线阅读 retriever 实验报告](https://torrentgzsz.github.io/agentic-load-skill/report-all-experiments.html)，或[下载原始 MHTML 快照](https://raw.githubusercontent.com/TorrentGZSZ/agentic-load-skill/main/docs/report-all-experiments.mhtml)。
