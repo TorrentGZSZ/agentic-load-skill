@@ -13,7 +13,6 @@ artifacts/
 /experiments/
 /docs/reports/
 /docs/assets/
-/docs/index.html
 /assets/
 /src/commands/web.ts
 /tests/web.test.ts
