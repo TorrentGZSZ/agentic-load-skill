@@ -284,7 +284,7 @@ async function handleRequest(
     }
     const url = new URL(req.url ?? "/", "http://localhost");
     if (req.method === "GET" && url.pathname === "/") {
-      sendHtml(res, pageHtml(hostName, mutationToken));
+      sendHtml(res, renderWebPage(hostName, mutationToken));
       return;
     }
     if (req.method === "GET" && url.pathname === "/logo.svg") {
@@ -954,7 +954,7 @@ function escapeHtmlAttr(value: string): string {
   return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
-function pageHtml(defaultHost: HostName, mutationToken: string): string {
+export function renderWebPage(defaultHost: HostName, mutationToken: string): string {
   return `<!doctype html>
 <html lang="en">
 <head>

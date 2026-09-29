@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="agentic-load-skill-token" content="demo-only">
+  <title>Agentic Load Skill · Interactive demo</title>
+  <link rel="icon" type="image/svg+xml" href="./logo.svg">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f6f9;
+      --panel: rgba(255, 255, 255, 0.92);
+      --panel-strong: #ffffff;
+      --ink: #1c2330;
+      --ink-soft: #3d4758;
+      --muted: #606d81;
+      --line: rgba(38, 49, 72, 0.12);
+      --accent: #485bb5;
+      --accent-soft: #e9ecfb;
+      --danger: #b63d4c;
+      --danger-soft: #fae9ec;
+      --field: rgba(255, 255, 255, 0.88);
+      --field-disabled: rgba(238, 241, 247, 0.72);
+      --button-muted: #edf0f5;
+      --segmented: #edf0f5;
+      --shadow: 0 18px 50px rgba(33, 45, 72, 0.07);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 12%, rgba(93, 109, 189, 0.055), transparent 28rem),
+        linear-gradient(180deg, #fbfcfe 0%, var(--bg) 52%, #eff1f6 100%);
+      color: var(--ink);
+    }
+    body.dark {
+      color-scheme: dark;
+      --bg: #111319;
+      --panel: rgba(25, 28, 36, 0.92);
+      --panel-strong: #1d222c;
+      --ink: #f1f3f8;
+      --ink-soft: #cdd3df;
+      --muted: #a0a9bb;
+      --line: rgba(205, 215, 235, 0.14);
+      --accent: #adb9ff;
+      --accent-soft: rgba(146, 160, 255, 0.16);
+      --danger: #f08b95;
+      --danger-soft: rgba(234, 107, 122, 0.17);
+      --field: rgba(218, 226, 255, 0.065);
+      --field-disabled: rgba(218, 226, 255, 0.035);
+      --button-muted: rgba(218, 226, 255, 0.08);
+      --segmented: rgba(218, 226, 255, 0.07);
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      background:
+        radial-gradient(circle at 18% 10%, rgba(146, 160, 255, 0.065), transparent 27rem),
+        linear-gradient(180deg, #171a22 0%, var(--bg) 55%, #0e1015 100%);
+    }
+    button, input, select { font: inherit; }
+    .shell {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 26px 0 48px;
+    }
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+    .brand {
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr);
+      grid-template-areas:
+        "mark title"
+        "copy copy";
+      gap: 10px 14px;
+      min-width: 0;
+    }
+    .brand-mark {
+      grid-area: mark;
+      width: 52px;
+      height: 52px;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-strong);
+      object-fit: cover;
+    }
+    .brand-title {
+      grid-area: title;
+      align-self: center;
+      min-width: 0;
+    }
+    .brand-copy {
+      grid-area: copy;
+      max-width: 760px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: 0;
+      color: var(--accent);
+    }
+    .sub {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .hero-copy {
+      max-width: 680px;
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding-top: 2px;
+    }
+    .view { display: block; }
+    .view[hidden] { display: none; }
+    .intro-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+      gap: 14px;
+      align-items: stretch;
+      margin-top: 14px;
+    }
+    .intro-main,
+    .intro-aside {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      backdrop-filter: blur(16px);
+    }
+    .intro-main {
+      padding: 24px;
+    }
+    .intro-aside {
+      padding: 20px;
+    }
+    .intro-title {
+      margin: 0 0 12px;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+    .intro-text {
+      margin: 0;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .feature {
+      min-height: 112px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(246, 248, 253, 0.55);
+    }
+    body.dark .feature {
+      background: rgba(218, 226, 255, 0.035);
+    }
+    .feature strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .feature span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .intro-aside dl {
+      display: grid;
+      gap: 14px;
+      margin: 0;
+    }
+    .intro-aside dt {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .intro-aside dd {
+      margin: 4px 0 0;
+      color: var(--ink);
+      font-weight: 650;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) 260px 220px minmax(280px, 0.9fr) 112px;
+      gap: 12px;
+      align-items: end;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--field);
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+    .control-group {
+      min-width: 0;
+    }
+    .controls:has(#projectPathGroup[hidden]) {
+      grid-template-columns: minmax(280px, 1fr) 260px 220px 112px;
+    }
+    .control-group[hidden] {
+      display: none;
+    }
+    .control-label {
+      display: block;
+      margin: 0 0 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .manager-panel {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+    .manager-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+    .manager-title {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+    .manager-copy {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 42px;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--segmented);
+    }
+    .segmented button {
+      border: 0;
+      border-radius: 6px;
+      padding: 8px 14px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .segmented button.active {
+      color: var(--ink);
+      background: var(--panel-strong);
+      box-shadow: 0 1px 8px rgba(33, 45, 72, 0.07);
+    }
+    .select-input,
+    .search-input,
+    .project-path {
+      min-width: 0;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      height: 42px;
+      padding: 0 11px;
+      color: var(--ink);
+      background: var(--field);
+    }
+    .select-input {
+      appearance: none;
+      padding-right: 34px;
+      background:
+        linear-gradient(45deg, transparent 50%, var(--muted) 50%) calc(100% - 18px) 18px / 6px 6px no-repeat,
+        linear-gradient(135deg, var(--muted) 50%, transparent 50%) calc(100% - 12px) 18px / 6px 6px no-repeat,
+        var(--field);
+      cursor: pointer;
+    }
+    .project-path[disabled] {
+      color: var(--muted);
+      background: var(--field-disabled);
+    }
+    .icon-button {
+      width: 38px;
+      height: 38px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      background: var(--panel-strong);
+      cursor: pointer;
+    }
+    .theme-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      min-width: 42px;
+      padding: 0 12px;
+      gap: 7px;
+    }
+    .theme-button span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .refresh-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      height: 42px;
+      min-width: 104px;
+      padding: 0 12px;
+      gap: 8px;
+    }
+    .refresh-button span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .summary {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-start;
+      gap: 2px;
+      min-width: 220px;
+      padding-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+    #count {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.3;
+    }
+    .status {
+      min-height: 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .status.error { color: var(--danger); }
+    .list {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--panel);
+      margin-top: 16px;
+    }
+    .list-scroll {
+      max-height: 540px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .list-scroll.empty-state { overflow: visible; }
+    .virtual-spacer {
+      width: 100%;
+      flex-shrink: 0;
+    }
+    .search-status {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+    .list-head,
+    .row {
+      display: grid;
+      grid-template-columns: minmax(180px, 1.2fr) minmax(220px, 2fr) 96px 96px;
+      gap: 16px;
+      align-items: center;
+    }
+    .list-head {
+      min-height: 42px;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--panel);
+    }
+    .list-head span:last-child {
+      text-align: right;
+    }
+    .row {
+      min-height: 64px;
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+    }
+    .list-head + .row { border-top: 0; }
+    .row:hover {
+      background: rgba(72, 91, 181, 0.055);
+    }
+    body.dark .row:hover {
+      background: rgba(173, 185, 255, 0.06);
+    }
+    .name {
+      min-width: 0;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+    .id {
+      margin-top: 4px;
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+    .desc {
+      min-width: 0;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: default;
+    }
+    .badge {
+      width: fit-content;
+      max-width: 100%;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-size: 12px;
+      font-weight: 650;
+      text-transform: capitalize;
+    }
+    .badge.disabled {
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
+    .action {
+      justify-self: end;
+      min-width: 82px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: var(--ink);
+      background: var(--panel-strong);
+      cursor: pointer;
+    }
+    .action.disable {
+      color: var(--danger);
+      border-color: var(--danger-soft);
+      background: var(--danger-soft);
+    }
+    .action.enable {
+      color: var(--accent);
+      border-color: var(--accent-soft);
+      background: var(--accent-soft);
+    }
+    .action:disabled {
+      color: var(--muted);
+      background: var(--button-muted);
+      cursor: not-allowed;
+    }
+    .empty {
+      padding: 38px 18px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .top-tabs {
+      display: flex;
+      gap: 22px;
+      width: 100%;
+      padding: 0 4px;
+      border-bottom: 1px solid var(--line);
+      margin: 0 0 18px;
+    }
+    .top-tabs button {
+      border: 0;
+      border-bottom: 2px solid transparent;
+      padding: 13px 0 12px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font-weight: 650;
+    }
+    .top-tabs button.active {
+      color: var(--ink);
+      border-bottom-color: var(--accent);
+    }
+    @media (max-width: 760px) {
+      .shell { width: min(100vw - 20px, 1120px); padding-top: 22px; }
+      header { display: block; padding: 18px; }
+      .brand { grid-template-columns: 46px minmax(0, 1fr); gap: 9px 12px; }
+      .brand-mark { width: 46px; height: 46px; }
+      h1 { font-size: 24px; }
+      .header-actions { margin-top: 16px; }
+      .top-tabs { width: 100%; }
+      .intro-panel { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .manager-head { display: block; }
+      .summary { align-items: flex-start; min-width: 0; margin-top: 14px; text-align: left; }
+      .controls { grid-template-columns: 1fr; }
+      .controls:has(#projectPathGroup[hidden]) { grid-template-columns: 1fr; }
+      .refresh-button { width: 100%; }
+      .list-head { display: none; }
+      .row {
+        grid-template-columns: 1fr auto;
+        gap: 10px 12px;
+      }
+      .desc { grid-column: 1 / -1; }
+      .badge { grid-column: 1; }
+      .action { grid-column: 2; grid-row: 1; }
+    }
+  </style>
+<style>
+  .demo-banner { position: sticky; top: 0; z-index: 30; padding: 10px 18px; border-bottom: 1px solid #cbd3ef; background: #e9ecfb; color: #344389; font: 600 13px/1.4 system-ui, sans-serif; text-align: center; }
+  body.dark .demo-banner { border-color: #3a4364; background: #252c44; color: #dce4ff; }
+</style>
+</head>
+<body>
+  <div class="demo-banner">Interactive preview · Example skills only · Changes stay in this browser tab</div>
+  <main class="shell">
+    <header>
+      <div class="brand">
+        <img class="brand-mark" src="./logo.svg" alt="" aria-hidden="true">
+        <div class="brand-title">
+          <h1>Agentic Load Skill</h1>
+          <div class="sub">No-embedding skill router for modern agent.</div>
+        </div>
+        <p class="hero-copy brand-copy">
+          Keep large skill libraries available without loading every instruction into the active agent context.
+          Browse installed Codex skills, search by name, and disable noisy entries from one local page.
+        </p>
+      </div>
+      <div class="header-actions">
+        <button id="themeBtn" class="icon-button theme-button" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">◐ <span id="themeLabel">Dark</span></button>
+      </div>
+    </header>
+
+    <nav class="top-tabs" aria-label="Primary views">
+      <button id="introTab" type="button">Overview</button>
+      <button id="skillsTab" class="active" type="button">Skill manager</button>
+    </nav>
+
+    <section id="introView" class="view" hidden>
+      <div class="intro-panel">
+        <div class="intro-main">
+          <h2 class="intro-title">Route only the skill an agent actually needs.</h2>
+          <p class="intro-text">
+            Agentic Load Skill scans Codex skill roots, reads local usage signals, and keeps disabled skills discoverable through a lightweight router instead of always injecting every SKILL.md into context.
+          </p>
+          <div class="feature-grid">
+            <div class="feature"><strong>No embeddings</strong><span>Selection uses deterministic local matching and routing data, so setup stays simple and offline-friendly.</span></div>
+            <div class="feature"><strong>Scope aware</strong><span>Browse Codex skills in global, plugin, builtin, and project scopes.</span></div>
+            <div class="feature"><strong>Reversible</strong><span>Disable and enable operations rename skill files and preserve state for safe restoration.</span></div>
+          </div>
+        </div>
+        <aside class="intro-aside" aria-label="Project facts">
+          <dl>
+            <div><dt>Scope</dt><dd>Global and project skills</dd></div>
+            <div><dt>Agent</dt><dd>Codex</dd></div>
+            <div><dt>Runtime</dt><dd>Local localhost web UI</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <section id="skillsView" class="view">
+      <section class="manager-panel" aria-label="Skill manager">
+        <div class="manager-head">
+          <div>
+            <h2 class="manager-title">Skill management</h2>
+            <p class="manager-copy">Inspect local Codex skills by scope, then disable or restore entries in place.</p>
+          </div>
+          <div class="summary">
+            <div id="count">0 skills</div>
+            <div id="status" class="status"></div>
+          </div>
+        </div>
+
+        <section class="controls" aria-label="Skill scope controls">
+          <div class="control-group">
+            <label class="control-label" for="searchInput">Search</label>
+            <input id="searchInput" class="search-input" type="search" placeholder="Name, id, or description">
+            <div id="searchStatus" class="search-status" aria-live="polite">0 / 0 skills</div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Scope</label>
+            <div class="segmented" role="tablist" aria-label="Scope">
+              <button id="globalBtn" class="active" type="button">Global</button>
+              <button id="projectBtn" type="button">Project</button>
+            </div>
+          </div>
+          <div id="projectPathGroup" class="control-group" hidden>
+            <label class="control-label" for="projectPath">Project path</label>
+            <input id="projectPath" class="project-path" type="text" placeholder="C:\path\to\project">
+          </div>
+          <div class="control-group">
+            <label class="control-label" aria-hidden="true">&nbsp;</label>
+            <button id="refreshBtn" class="icon-button refresh-button" type="button" aria-label="Refresh" title="Refresh">↻ <span>Refresh</span></button>
+          </div>
+        </section>
+
+        <section id="list" class="list" aria-label="Skills"></section>
+      </section>
+    </section>
+  </main>
+
+  <script>
+  // Standalone preview: API requests are answered in memory with sample data.
+  const demoSkills = {"global":[{"id":"user:codex:api-reference","instanceKey":"demo:user:api-reference","name":"api-reference","description":"Look up API endpoints, parameters, and response shapes.","source":"user","type":"user","pluginKey":null,"isDisabled":false,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0},{"id":"user:codex:code-review","instanceKey":"demo:user:code-review","name":"code-review","description":"Review changes for correctness, clarity, and regressions.","source":"user","type":"user","pluginKey":null,"isDisabled":false,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0},{"id":"user:codex:data-analysis","instanceKey":"demo:user:data-analysis","name":"data-analysis","description":"Explore a dataset and summarize useful patterns.","source":"user","type":"user","pluginKey":null,"isDisabled":false,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0},{"id":"plugin:codex:design-assets","instanceKey":"demo:plugin:design-assets","name":"design-assets","description":"Create visual assets for product and documentation pages.","source":"plugin","type":"plugin","pluginKey":"demo","isDisabled":false,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0},{"id":"user:codex:pdf-reader","instanceKey":"demo:user:pdf-reader","name":"pdf-reader","description":"Extract and inspect text, tables, and figures in PDF files.","source":"user","type":"user","pluginKey":null,"isDisabled":false,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0},{"id":"user:codex:release-notes","instanceKey":"demo:user:release-notes","name":"release-notes","description":"Turn completed changes into concise release notes.","source":"user","type":"user","pluginKey":null,"isDisabled":true,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0},{"id":"plugin:codex:spreadsheet","instanceKey":"demo:plugin:spreadsheet","name":"spreadsheet","description":"Build and check spreadsheet models and charts.","source":"plugin","type":"plugin","pluginKey":"demo","isDisabled":false,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0},{"id":"plugin:codex:web-testing","instanceKey":"demo:plugin:web-testing","name":"web-testing","description":"Run browser checks on an interactive web page.","source":"plugin","type":"plugin","pluginKey":"demo","isDisabled":true,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0}],"project":[{"id":"project:codex:architecture-notes","instanceKey":"demo:project:architecture-notes","name":"architecture-notes","description":"Explain the demo project's modules and design decisions.","source":"project","type":"project","pluginKey":null,"isDisabled":false,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0},{"id":"project:codex:issue-triage","instanceKey":"demo:project:issue-triage","name":"issue-triage","description":"Group incoming issues and suggest priorities.","source":"project","type":"project","pluginKey":null,"isDisabled":true,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0},{"id":"project:codex:test-helper","instanceKey":"demo:project:test-helper","name":"test-helper","description":"Find relevant tests and report failures in this project.","source":"project","type":"project","pluginKey":null,"isDisabled":false,"isPluginDisabled":false,"canDisable":true,"conflict":false,"outOfRoot":false,"lastUsed":null,"callCount":0}]};
+  document.getElementById("projectPath").value = "C:/demo-project";
+  const demoResponse = (data, status = 200) => new Response(JSON.stringify(data), {
+    status,
+    headers: { "content-type": "application/json" },
+  });
+  window.fetch = async (input, options = {}) => {
+    const url = new URL(String(input), window.location.href);
+    const scope = url.searchParams.get("scope") === "project" ? "project" : "global";
+    if (url.pathname === "/api/skills" && (!options.method || options.method === "GET")) {
+      return demoResponse({ host: "codex", scope, projectPath: scope === "project" ? "C:/demo-project" : null, skills: demoSkills[scope] });
+    }
+    if (url.pathname === "/api/skills/disable" || url.pathname === "/api/skills/enable") {
+      let body;
+      try { body = JSON.parse(options.body); } catch { return demoResponse({ error: "Invalid request" }, 400); }
+      const group = body.scope === "project" ? "project" : "global";
+      const selected = demoSkills[group].find((item) => item.instanceKey === body.instanceKey);
+      if (!selected) return demoResponse({ error: "Demo skill not found" }, 404);
+      selected.isDisabled = url.pathname.endsWith("/disable");
+      return demoResponse({ ok: true, skill: selected, skills: demoSkills[group] });
+    }
+    return demoResponse({ error: "Demo only: no backend is connected" }, 404);
+  };
+</script>
+<script>
+    const savedTheme = localStorage.getItem("agentic-load-skill-theme");
+    const mutationToken = document.querySelector('meta[name="agentic-load-skill-token"]').content;
+    const state = {
+      agent: "codex",
+      scope: "global",
+      projectPath: "",
+      query: "",
+      skills: [],
+      busy: new Set(),
+      requestId: 0,
+      view: "skills",
+      theme: savedTheme === "dark" ? "dark" : "light",
+    };
+    const els = {
+      themeBtn: document.getElementById("themeBtn"),
+      themeLabel: document.getElementById("themeLabel"),
+      introView: document.getElementById("introView"),
+      skillsView: document.getElementById("skillsView"),
+      introTab: document.getElementById("introTab"),
+      skillsTab: document.getElementById("skillsTab"),
+      searchInput: document.getElementById("searchInput"),
+      searchStatus: document.getElementById("searchStatus"),
+      globalBtn: document.getElementById("globalBtn"),
+      projectBtn: document.getElementById("projectBtn"),
+      projectPathGroup: document.getElementById("projectPathGroup"),
+      projectPath: document.getElementById("projectPath"),
+      refreshBtn: document.getElementById("refreshBtn"),
+      count: document.getElementById("count"),
+      status: document.getElementById("status"),
+      list: document.getElementById("list"),
+    };
+
+    // Virtualization state. Skills rows render at a uniform height in the
+    // current UI (same .row grid template, no expanding content), so we
+    // measure once and treat every row as that height.
+    const SEARCH_DEBOUNCE_MS = 150;
+    const VIRTUAL_OVERSCAN = 6;
+    const DEFAULT_ROW_HEIGHT = 64;
+    const virt = {
+      rowHeight: 0,
+      scrollEl: null,
+      topSpacer: null,
+      bottomSpacer: null,
+      rowsHost: null,
+      rafToken: 0,
+      lastSkills: null,
+      lastTotal: -1,
+    };
+    let searchDebounceTimer = 0;
+
+    els.themeBtn.addEventListener("click", toggleTheme);
+    els.introTab.addEventListener("click", () => setView("intro"));
+    els.skillsTab.addEventListener("click", () => setView("skills"));
+    els.globalBtn.addEventListener("click", () => setScope("global"));
+    els.projectBtn.addEventListener("click", () => setScope("project"));
+    els.refreshBtn.addEventListener("click", () => loadSkills());
+    els.searchInput.addEventListener("input", () => {
+      if (searchDebounceTimer) window.clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = window.setTimeout(() => {
+        searchDebounceTimer = 0;
+        state.query = els.searchInput.value;
+        render();
+      }, SEARCH_DEBOUNCE_MS);
+    });
+    els.projectPath.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        state.projectPath = els.projectPath.value;
+        loadSkills();
+      }
+    });
+    els.projectPath.addEventListener("blur", () => {
+      if (state.scope === "project" && state.projectPath !== els.projectPath.value) {
+        state.projectPath = els.projectPath.value;
+        loadSkills();
+      }
+    });
+
+    function toggleTheme() {
+      setTheme(state.theme === "dark" ? "light" : "dark");
+    }
+
+    function setTheme(theme) {
+      state.theme = theme;
+      document.body.classList.toggle("dark", theme === "dark");
+      els.themeLabel.textContent = theme === "dark" ? "Light" : "Dark";
+      localStorage.setItem("agentic-load-skill-theme", theme);
+    }
+
+    function setView(view) {
+      state.view = view;
+      els.introView.hidden = view !== "intro";
+      els.skillsView.hidden = view !== "skills";
+      els.introTab.classList.toggle("active", view === "intro");
+      els.skillsTab.classList.toggle("active", view === "skills");
+    }
+
+
+    function setScope(scope) {
+      state.scope = scope;
+      els.globalBtn.classList.toggle("active", scope === "global");
+      els.projectBtn.classList.toggle("active", scope === "project");
+      els.projectPathGroup.hidden = scope !== "project";
+      if (scope === "project") els.projectPath.focus();
+      loadSkills();
+    }
+
+    async function loadSkills() {
+      state.projectPath = els.projectPath.value;
+      const requestId = state.requestId + 1;
+      state.requestId = requestId;
+      if (state.scope === "project" && !state.projectPath.trim()) {
+        state.skills = [];
+        render();
+        setStatus("");
+        return;
+      }
+      setStatus("Loading...");
+      const params = new URLSearchParams({ agent: state.agent, scope: state.scope });
+      if (state.scope === "project") params.set("projectPath", state.projectPath);
+      try {
+        const res = await fetch("/api/skills?" + params.toString(), {
+          headers: { "x-agentic-load-skill-token": mutationToken },
+        });
+        const data = await readResponse(res);
+        if (requestId !== state.requestId) return;
+        state.skills = data.skills || [];
+        render();
+        setStatus("");
+      } catch (err) {
+        if (requestId !== state.requestId) return;
+        state.skills = [];
+        render();
+        setStatus(err.message, true);
+      }
+    }
+
+    async function mutate(skill) {
+      if (skill.outOfRoot) {
+        const ok = window.confirm(
+          "This skill is a symlink. Changing it will rename SKILL.md at the linked target, outside this agent's skills root. Continue?"
+        );
+        if (!ok) return;
+      }
+      state.busy.add(skill.instanceKey);
+      render();
+      const endpoint = skill.isDisabled ? "/api/skills/enable" : "/api/skills/disable";
+      try {
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            "x-agentic-load-skill-token": mutationToken,
+          },
+          body: JSON.stringify({
+            agent: state.agent,
+            scope: state.scope,
+            projectPath: state.projectPath,
+            instanceKey: skill.instanceKey,
+          }),
+        });
+        const data = await readResponse(res);
+        state.skills = data.skills || [];
+        setStatus(skill.isDisabled ? "Enabled." : "Disabled.");
+      } catch (err) {
+        setStatus(err.message, true);
+      } finally {
+        state.busy.delete(skill.instanceKey);
+        render();
+      }
+    }
+
+    async function readResponse(res) {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Request failed");
+      return data;
+    }
+
+    function render() {
+      const visibleSkills = filteredSkills();
+      els.count.textContent = countLabel(visibleSkills.length, state.skills.length);
+      updateSearchStatus(visibleSkills.length, state.skills.length);
+      virt.lastSkills = visibleSkills;
+      if (state.scope === "project" && !state.projectPath.trim()) {
+        teardownVirtualList();
+        els.list.innerHTML = '<div class="empty">Enter a project path to inspect project skills.</div>';
+        return;
+      }
+      if (visibleSkills.length === 0) {
+        teardownVirtualList();
+        els.list.innerHTML = '<div class="empty">' + (state.skills.length === 0 ? "No skills found." : "No skills match this search.") + '</div>';
+        return;
+      }
+      ensureVirtualList();
+      // Filtering or reloading changes the total. Jump back to the top of
+      // the new result set so the user sees matches immediately instead of
+      // landing in whatever scroll position the previous list had — and so
+      // a stale scrollTop never leaves the viewport past the end of a
+      // shrunken result set.
+      if (virt.lastTotal !== visibleSkills.length && virt.scrollEl) {
+        virt.scrollEl.scrollTop = 0;
+      }
+      virt.lastTotal = visibleSkills.length;
+      renderVirtualSlice();
+    }
+
+    function updateSearchStatus(visible, total) {
+      if (!els.searchStatus) return;
+      els.searchStatus.textContent = visible + " / " + total + " skills";
+    }
+
+    function teardownVirtualList() {
+      virt.scrollEl = null;
+      virt.topSpacer = null;
+      virt.bottomSpacer = null;
+      virt.rowsHost = null;
+      // Force the next ensureVirtualList() + renderVirtualSlice() to treat
+      // the rebuilt scroll container as a total-changed transition so we
+      // restart at the top of the new list.
+      virt.lastTotal = -1;
+      if (virt.rafToken) {
+        cancelAnimationFrame(virt.rafToken);
+        virt.rafToken = 0;
+      }
+    }
+
+    function ensureVirtualList() {
+      if (virt.scrollEl && virt.scrollEl.isConnected) return;
+      teardownVirtualList();
+      const header = renderListHeader();
+      const scroll = document.createElement("div");
+      scroll.className = "list-scroll";
+      // Make the scroll container keyboard-focusable so users can reach it
+      // with Tab and then use ↑/↓/PageUp/PageDown/Home/End to scroll.
+      // Without this, keyboard users can only Tab through the currently
+      // rendered buttons; once focus leaves the last visible row the rest of
+      // the virtual list is unreachable — a regression vs. the pre-virtual UI
+      // where every button was in the DOM.
+      scroll.tabIndex = 0;
+      scroll.setAttribute("aria-label", "Skill list");
+      const top = document.createElement("div");
+      top.className = "virtual-spacer virtual-spacer-top";
+      top.style.height = "0px";
+      const rowsHost = document.createElement("div");
+      rowsHost.className = "virtual-rows";
+      rowsHost.setAttribute("role", "list");
+      const bottom = document.createElement("div");
+      bottom.className = "virtual-spacer virtual-spacer-bottom";
+      bottom.style.height = "0px";
+      scroll.append(top, rowsHost, bottom);
+      els.list.replaceChildren(header, scroll);
+      virt.scrollEl = scroll;
+      virt.topSpacer = top;
+      virt.bottomSpacer = bottom;
+      virt.rowsHost = rowsHost;
+      scroll.addEventListener("scroll", scheduleVirtualRender, { passive: true });
+    }
+
+    function scheduleVirtualRender() {
+      if (virt.rafToken) return;
+      virt.rafToken = requestAnimationFrame(() => {
+        virt.rafToken = 0;
+        renderVirtualSlice();
+      });
+    }
+
+    // Pure virtual-window math. Exported on globalThis for test harnesses to
+     // exercise without spinning up a DOM. Returns the [first, last) range and
+     // the spacer heights for a given scroll position.
+    function computeVirtualWindow(opts) {
+      const total = opts.total;
+      const rowHeight = opts.rowHeight > 0 ? opts.rowHeight : DEFAULT_ROW_HEIGHT;
+      const viewportHeight = Math.max(0, opts.viewportHeight);
+      const scrollTop = Math.max(0, opts.scrollTop);
+      const overscan = opts.overscan >= 0 ? opts.overscan : VIRTUAL_OVERSCAN;
+      if (total <= 0) {
+        return { first: 0, last: 0, topHeight: 0, bottomHeight: 0 };
+      }
+      const visibleCount = Math.ceil(viewportHeight / rowHeight) + overscan * 2;
+      const rawFirst = Math.floor(scrollTop / rowHeight) - overscan;
+      // Clamp first so it can never exceed total - visibleCount. Without
+      // this, a stale scrollTop (e.g. user filters the list down while
+      // scrolled near the bottom) would produce first === last === total and
+      // render an empty slice even though total > 0. The render path also
+      // resets scrollTop on total change for the UX win of jumping to the
+      // top of new results, but the clamp keeps the math correct in
+      // isolation regardless of caller behavior.
+      const maxFirst = Math.max(0, total - visibleCount);
+      const first = Math.max(0, Math.min(maxFirst, rawFirst));
+      const last = Math.min(total, first + visibleCount);
+      return {
+        first,
+        last,
+        topHeight: first * rowHeight,
+        bottomHeight: (total - last) * rowHeight,
+      };
+    }
+
+    function renderVirtualSlice() {
+      if (!virt.rowsHost || !virt.scrollEl) return;
+      const skills = virt.lastSkills || [];
+      if (skills.length === 0) {
+        virt.rowsHost.replaceChildren();
+        virt.topSpacer.style.height = "0px";
+        virt.bottomSpacer.style.height = "0px";
+        return;
+      }
+      const needsMeasurement = virt.rowHeight <= 0;
+      const win = computeVirtualWindow({
+        total: skills.length,
+        rowHeight: virt.rowHeight,
+        viewportHeight: virt.scrollEl.clientHeight || 0,
+        scrollTop: virt.scrollEl.scrollTop,
+        overscan: VIRTUAL_OVERSCAN,
+      });
+      const slice = skills.slice(win.first, win.last);
+      virt.topSpacer.style.height = win.topHeight + "px";
+      virt.bottomSpacer.style.height = win.bottomHeight + "px";
+      virt.rowsHost.replaceChildren(...slice.map(renderRow));
+      if (needsMeasurement && virt.rowsHost.firstElementChild) {
+        // Measure the first real rendered row and, if it differs from the
+        // default, recompute spacer heights once. Rows are uniform, so we only
+        // need to do this on the first paint.
+        const measured = virt.rowsHost.firstElementChild.getBoundingClientRect().height;
+        if (measured > 0 && Math.abs(measured - DEFAULT_ROW_HEIGHT) > 0.5) {
+          virt.rowHeight = measured;
+          renderVirtualSlice();
+        } else {
+          virt.rowHeight = measured > 0 ? measured : DEFAULT_ROW_HEIGHT;
+        }
+      }
+    }
+
+    globalThis.__agenticSkillRouterVirtual = { computeVirtualWindow };
+
+    function filteredSkills() {
+      const query = state.query.trim().toLowerCase();
+      if (!query) return state.skills;
+      return state.skills.filter((skill) => {
+        const haystack = [
+          skill.name,
+          skill.id,
+          skill.description,
+          skill.type,
+          skill.source,
+          skill.pluginKey,
+        ].filter(Boolean).join(" ").toLowerCase();
+        return haystack.includes(query);
+      });
+    }
+
+    function countLabel(visible, total) {
+      const count = visible === 1 ? "1 skill" : visible + " skills";
+      const scope = state.scope === "project" ? "Project" : "Global";
+      const agent = "Codex";
+      if (visible !== total) return count + " of " + total + " · " + agent + " · " + scope;
+      return count + " · " + agent + " · " + scope;
+    }
+
+    function renderListHeader() {
+      const header = document.createElement("div");
+      header.className = "list-head";
+      for (const label of ["Skill", "Description", "Type", "Action"]) {
+        const span = document.createElement("span");
+        span.textContent = label;
+        header.appendChild(span);
+      }
+      return header;
+    }
+
+    function renderRow(skill) {
+      const row = document.createElement("article");
+      row.className = "row";
+      row.setAttribute("role", "listitem");
+
+      const title = document.createElement("div");
+      title.className = "name";
+      title.textContent = skill.name || skill.id;
+      const id = document.createElement("div");
+      id.className = "id";
+      id.textContent = skill.id;
+      title.appendChild(id);
+
+      const desc = document.createElement("div");
+      desc.className = "desc";
+      const descText = skill.description || "No description";
+      desc.textContent = descText;
+      // Use the native title attribute instead of a custom tooltip element so
+      // long descriptions are not clipped by the virtualized scroll container
+      // (.list-scroll uses overflow:auto/hidden).
+      desc.title = descText;
+
+      const badge = document.createElement("div");
+      badge.className = "badge" + (skill.isDisabled ? " disabled" : "");
+      badge.textContent = skill.type || (skill.outOfRoot ? "symlink" : skill.source);
+
+      const action = document.createElement("button");
+      action.className = "action " + (skill.isDisabled ? "enable" : "disable");
+      action.type = "button";
+      action.textContent = skill.isDisabled ? "Enable" : "Disable";
+      const canMutate = (skill.canDisable || canMutateSymlink(skill)) && !skill.conflict;
+      action.disabled = state.busy.has(skill.instanceKey) || !canMutate;
+      action.title = actionTitle(skill, action.textContent);
+      action.addEventListener("click", () => mutate(skill));
+
+      row.append(title, desc, badge, action);
+      return row;
+    }
+
+    function actionTitle(skill, label) {
+      if (skill.conflict) return "Resolve conflicting skill files first";
+      if (skill.outOfRoot && skill.source === "builtin") return "Protected symlink";
+      if (skill.outOfRoot) return "Symlink: changes apply to the linked target";
+      if (!skill.canDisable) return "Protected skill";
+      return label;
+    }
+
+    function canMutateSymlink(skill) {
+      return skill.outOfRoot && skill.source !== "builtin";
+    }
+
+    function setStatus(message, isError = false) {
+      els.status.textContent = message;
+      els.status.classList.toggle("error", isError);
+    }
+
+    setTheme(state.theme);
+    setView(state.view);
+    loadSkills();
+  </script>
+</body>
+</html>

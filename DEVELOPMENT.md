@@ -9,6 +9,7 @@
 - src/scan.ts、src/usage.ts：skill 枚举与使用记录。
 - src/commands/：列出、检索、路由、禁用、恢复、状态和初始化命令。
 - src/commands/web.ts：本地 Codex skill 管理页面及 HTTP API；图标位于 assets/。
+- scripts/build-web-demo.mjs：从同一页面模板生成 docs/demo/ 静态演示，使用虚构 skill 数据；运行 `npm run build:web-demo` 更新页面，`npm run check:web-demo` 检查是否同步。
 - src/state.ts：禁用记录与恢复状态。
 - skills/agentic-load-skill/：安装到 Codex 的工作流说明。
 - scripts/build.mjs：把 TypeScript 构建为无运行依赖的 ESM CLI。

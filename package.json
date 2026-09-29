@@ -35,6 +35,8 @@
     "check:assets": "node scripts/generate-assets.mjs --check",
     "check:pack": "node scripts/check-pack.mjs",
     "build": "node scripts/generate-assets.mjs && node scripts/build.mjs",
+    "build:web-demo": "node --import tsx scripts/build-web-demo.mjs",
+    "check:web-demo": "node --import tsx scripts/build-web-demo.mjs --check",
     "prepack": "npm run build",
     "typecheck": "tsc --noEmit",
     "test": "node --test --import tsx tests/init.test.ts tests/config.test.ts tests/text-match.test.ts tests/metadata-route.test.ts tests/route.test.ts",
