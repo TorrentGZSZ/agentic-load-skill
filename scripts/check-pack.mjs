@@ -16,12 +16,13 @@ const root = resolve(__dirname, "..");
 const REQUIRED_FILES = [
   "bin/agentic-load-skill",
   "lib/agentic-load-skill.mjs",
+  "assets/agentic-load-skill-mark.svg",
   "skills/agentic-load-skill/SKILL.md",
   "plugins/codex/.codex-plugin/plugin.json",
   "plugins/codex/prompts/agentic-load-skill.md",
 ];
 
-const REQUIRED_DIRS = ["bin/", "lib/", "skills/", "plugins/codex/prompts/"];
+const REQUIRED_DIRS = ["assets/", "bin/", "lib/", "skills/", "plugins/codex/prompts/"];
 
 const FORBIDDEN_PACK_ENTRIES = [
   "bin/skill-router",
@@ -33,7 +34,6 @@ const FORBIDDEN_PACK_ENTRIES = [
   "skills/agentic-load-skill-skills/",
   "experiments/",
   "plugins/claude-code/",
-  "assets/",
 ];
 
 async function fail(message) {

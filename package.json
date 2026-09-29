@@ -23,6 +23,7 @@
   },
   "files": [
     "README.md",
+    "assets/agentic-load-skill-mark.svg",
     "bin/",
     "lib/agentic-load-skill.mjs",
     "skills/",

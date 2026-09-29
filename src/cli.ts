@@ -10,6 +10,7 @@ import { cmdList } from "./commands/list.ts";
 import { cmdRoute } from "./commands/route.ts";
 import { cmdStatus } from "./commands/status.ts";
 import { cmdSuggest } from "./commands/suggest.ts";
+import { cmdWeb } from "./commands/web.ts";
 import { findDeprecatedHostFlag, resolveHostName } from "./host-resolve.ts";
 import { usage } from "./output.ts";
 import type { HostName } from "./types.ts";
@@ -52,6 +53,7 @@ const SKILLS_COMMANDS = new Set([
   "disable",
   "enable",
   "status",
+  "web",
   "config",
 ]);
 
@@ -74,6 +76,7 @@ async function dispatchSkillsCommand(
     case "disable": return await cmdDisable(rest, hostName);
     case "enable": return await cmdEnable(rest, hostName);
     case "status": return await cmdStatus(rest, hostName);
+    case "web": return await cmdWeb(rest, hostName);
     case "config": return await cmdConfig(rest);
     case undefined:
     case "-h":

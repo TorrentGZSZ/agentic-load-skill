@@ -50,6 +50,7 @@ SKILL COMMANDS
   disable (<id...> | --all-suggested [--unused-for=<dur>]) --yes [--reason=<text>] [--allow-symlink-target-mutation]
   enable <id...> [--allow-symlink-target-mutation]
   status [--json]
+  web [--port=N] [--bind=ADDR] [--project-root=DIR ...]
   config get [--json]
   config set <key> <value>
   config path

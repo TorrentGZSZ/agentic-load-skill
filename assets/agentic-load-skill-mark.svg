@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Agentic Load Skill">
+  <defs>
+    <linearGradient id="surface" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5367c6"/>
+      <stop offset="1" stop-color="#263774"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#surface)"/>
+  <rect x="14" y="15" width="27" height="9" rx="3" fill="#ffffff" fill-opacity=".38"/>
+  <rect x="14" y="28" width="27" height="9" rx="3" fill="#ffffff"/>
+  <rect x="14" y="41" width="27" height="9" rx="3" fill="#ffffff" fill-opacity=".38"/>
+  <path d="M36 32.5h8" fill="none" stroke="#dce4ff" stroke-linecap="round" stroke-width="3"/>
+  <circle cx="49" cy="32.5" r="5" fill="#b9c8ff"/>
+</svg>

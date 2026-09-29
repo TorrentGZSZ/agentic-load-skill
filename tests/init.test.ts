@@ -79,16 +79,17 @@ test("init rejects Claude Code and the CLI help lists Codex only", async () => {
   });
 });
 
-test("CLI help does not offer the local Web prototype", async () => {
+test("CLI help offers the local Web UI", async () => {
   await withSandbox(async (_root, env) => {
     const { stdout } = await execFileAsync(process.execPath, ["--import", "tsx", cliPath, "--help"], {
       cwd: rootDir,
       env,
     });
-    assert.doesNotMatch(stdout, /^\s+web\s/m);
-    await assert.rejects(execFileAsync(process.execPath, ["--import", "tsx", cliPath, "web"], {
+    assert.match(stdout, /^\s+web\s/m);
+    const webHelp = await execFileAsync(process.execPath, ["--import", "tsx", cliPath, "web", "--help"], {
       cwd: rootDir,
       env,
-    }), /unknown command: web/);
+    });
+    assert.match(webHelp.stdout, /Starts a localhost web UI/);
   });
 });

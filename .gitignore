@@ -9,12 +9,12 @@ plugins/*/lib/
 artifacts/
 *.tgz
 
-# Local research material and unpublished UI prototype.
+# Local research material.
 /experiments/
 /docs/reports/
 /docs/assets/
-/assets/
-/src/commands/web.ts
+/assets/*
+!/assets/agentic-load-skill-mark.svg
 /tests/web.test.ts
 
 # Third-party benchmark corpora are generated/downloaded on demand.

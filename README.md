@@ -103,6 +103,16 @@ agentic-load-skill enable '<skill-id-from-status>'
 
 `disable` 会重命名目标 skill 文件；`enable` 会恢复它。只对你确认要调整的 ID 使用这些命令。其他可用命令见 `agentic-load-skill --help`。
 
+## 从源码试用本地 Web 界面
+
+~~~powershell
+npm install
+npm run build
+node .\bin\agentic-load-skill web
+~~~
+
+打开终端输出的 `http://127.0.0.1:8787/`，可以查看、搜索、禁用及恢复 Codex skill。停止服务时按 `Ctrl+C`。如需更换端口，使用 `node .\bin\agentic-load-skill web --port=8788`。
+
 ## 实验报告
 
 [在线阅读 retriever 实验报告](https://torrentgzsz.github.io/agentic-load-skill/report-all-experiments.html)，或[下载原始 MHTML 快照](https://raw.githubusercontent.com/TorrentGZSZ/agentic-load-skill/main/docs/report-all-experiments.mhtml)。
