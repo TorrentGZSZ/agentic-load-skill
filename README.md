@@ -2,6 +2,8 @@
 
 Windows PowerShell 下的 Codex skill 检索与管理 CLI。需要 Node.js 20 或更新版本。
 
+![Agentic Skill Loader：按需检索与加载 Skill 的流程](docs/images/agentic-skill-loader-overview.png)
+
 ## 从 npm 安装
 
 ~~~powershell
