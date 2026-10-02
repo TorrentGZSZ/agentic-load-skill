@@ -4,7 +4,7 @@ Windows PowerShell 下的 Codex skill 检索与管理 CLI。需要 Node.js 20 �
 
 ## 在线预览
 
-[打开 Agentic Load Skill Web 界面演示](https://torrentgzsz.github.io/agentic-load-skill/demo/)。页面使用示例 skill 数据；搜索、切换范围及禁用/恢复可直接试用，操作只影响当前浏览器标签页。
+[打开 Agentic Load Skill Web 界面演示](https://torrentgzsz.github.io/agentic-load-skill/demo/)。全局列表使用本地 skill 元数据快照，项目列表使用示例数据；搜索、切换范围及禁用/恢复可直接试用，操作只影响当前浏览器标签页。
 
 ![Agentic Skill Loader：按需检索与加载 Skill 的流程](docs/images/agentic-skill-loader-overview.png)
 

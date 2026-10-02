@@ -25,18 +25,10 @@ const skill = (name, description, source = "user", isDisabled = false) => ({
   callCount: 0,
 });
 
-// Entirely fictional examples. Never read or embed the build machine's skills.
+// Build from a reviewed metadata snapshot, never from the build machine's inventory.
+const snapshot = JSON.parse(await readFile(resolve(demoDir, "skills.json"), "utf8"));
 const demoSkills = {
-  global: [
-    skill("api-reference", "Look up API endpoints, parameters, and response shapes."),
-    skill("code-review", "Review changes for correctness, clarity, and regressions."),
-    skill("data-analysis", "Explore a dataset and summarize useful patterns."),
-    skill("design-assets", "Create visual assets for product and documentation pages.", "plugin"),
-    skill("pdf-reader", "Extract and inspect text, tables, and figures in PDF files."),
-    skill("release-notes", "Turn completed changes into concise release notes.", "user", true),
-    skill("spreadsheet", "Build and check spreadsheet models and charts.", "plugin"),
-    skill("web-testing", "Run browser checks on an interactive web page.", "plugin", true),
-  ],
+  global: snapshot.global,
   project: [
     skill("architecture-notes", "Explain the demo project's modules and design decisions.", "project"),
     skill("issue-triage", "Group incoming issues and suggest priorities.", "project", true),
@@ -46,7 +38,7 @@ const demoSkills = {
 
 const demoAdapter = `<script>
   // Standalone preview: API requests are answered in memory with sample data.
-  const demoSkills = ${JSON.stringify(demoSkills)};
+  const demoSkills = ${JSON.stringify(demoSkills).replaceAll("<", "\\u003c")};
   document.getElementById("projectPath").value = "C:/demo-project";
   const demoResponse = (data, status = 200) => new Response(JSON.stringify(data), {
     status,
@@ -85,7 +77,7 @@ html = replaceRequired(html, "</head>", `<style>
   body.dark .demo-banner { border-color: #3a4364; background: #252c44; color: #dce4ff; }
 </style>
 </head>`);
-html = replaceRequired(html, "<body>", '<body>\n  <div class="demo-banner">Interactive preview · Example skills only · Changes stay in this browser tab</div>');
+html = replaceRequired(html, "<body>", `<body>\n  <div class="demo-banner">Interactive preview · ${demoSkills.global.length} skills from a local snapshot (${snapshot.capturedOn}) · Project examples · Changes stay in this browser tab</div>`);
 html = html.replace(/<script>\s*const savedTheme/, `${demoAdapter}\n<script>\n    const savedTheme`);
 if (!html.includes(demoAdapter)) throw new Error("Could not insert demo adapter before the application script");
 
